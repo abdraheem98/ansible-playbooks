@@ -1,1 +1,21 @@
 
+---
+- name: Create EC2 instances
+  hosts: localhost
+  gather_facts: false
+  tasks:
+    - name: Create EC2 instances
+      shell: >
+        aws ec2 run-instances
+        --image-id "AMI-ID"
+        --count 3
+        --instance-type t2.micro
+        --key-name "Your-keypair-name"
+        --security-group-ids "Your-securitygroup-id"
+        --region "your-region"
+      register: ec2_result
+      changed_when: false
+
+    - name: Debug EC2 instance creation output
+      debug:
+        var: ec2_result.stdout
